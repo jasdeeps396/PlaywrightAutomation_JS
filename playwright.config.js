@@ -14,13 +14,15 @@ import { chromium, defineConfig, devices, firefox } from '@playwright/test';
  */
 export default defineConfig({
   testDir: './tests',
-  timeout: 40 * 1000,
+  timeout: 30 * 1000,
   expect:
   {
     timeout: 6000
   },
-  reporter: 'html',
-
+ reporter: [
+    ['html'],
+    ['allure-playwright']
+  ],
 
   use:
   {
@@ -31,6 +33,7 @@ export default defineConfig({
     
   }
   ,
+  workers: 2,
 
   projects: [
     {

@@ -11,12 +11,13 @@ test("launch automation practice with page", async ({ page }) => {
     const signInBtn = page.locator("#signInBtn")
     const cardTitle = page.locator(".card-title a")
     await page.goto("https://rahulshettyacademy.com/loginpagePractise/")
-
+    
     console.log(await page.title())
     await userNameField.fill("rahulshetty")
-    await passwordField.fill("learning");
+    await passwordField.fill("Learning@830$3mK2");
     await signInBtn.click();
     const recievedText = await page.locator("[style*='block']").textContent();
+
     console.log(recievedText)
 
     expect(recievedText).toContain("Incorrect username/password")
@@ -27,8 +28,7 @@ test("launch automation practice with page", async ({ page }) => {
     await signInBtn.click();
 
     // console.log(await cardTitle.first().textContent())
-    // console.log(await cardTitle.nth(1).textContent())
-
+    await cardTitle.last().waitFor()
 
     console.log(await cardTitle.allInnerTexts())
     console.log(await cardTitle.allTextContents())
@@ -50,7 +50,7 @@ test("UI Controls", async ({ page }) => {
 
 
     await userNameField.fill("rahulshettyacademy")
-    await passwordField.fill("learning")
+    await passwordField.fill("Learning@830$3mK2")
 
     await page.locator("select.form-control").selectOption("consult")
 
@@ -85,12 +85,15 @@ test("child window handling", async({browser})=>
     const context = await browser.newContext();
     const page = await context.newPage()
     await page.goto("https://rahulshettyacademy.com/loginpagePractise/")
-    const docLink =page.locator("a[href='https://rahulshettyacademy.com/documents-request']")
+    const docLink =page.locator("a[href*='documents-request']")
 
 
    const [newpage] = await Promise.all(
+
     [context.waitForEvent('page'),
+        
     docLink.click()])
+
 
     const text =await newpage.locator(".red").textContent()
     console.log(text)
@@ -102,12 +105,12 @@ test("child window handling", async({browser})=>
     await  userNameField.fill(domainName)
 
 
-
-    
-
+    console.log("input value ----->", await userNameField.inputValue())
 
 
 })
+
+
 
 
 

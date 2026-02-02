@@ -60,7 +60,9 @@ test('client app login', async ({ page }) => {
  
 
   // Wait for and select country from dropdown
-  await page.locator("[placeholder='Select Country']").pressSequentially("ind");
+  await page.locator("[placeholder='Select Country']").pressSequentially("ind",
+    {delay:100}
+  );
 
   const countryResults = page.locator(".ta-results");
   await countryResults.waitFor();

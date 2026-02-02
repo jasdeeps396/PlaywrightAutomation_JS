@@ -1,44 +1,36 @@
-import { test,expect, request } from "@playwright/test";
+import{ test, expect, request } from '@playwright/test';
 
-const loginData = {userEmail:"jasdeeps426@yopmail.com",userPassword:"Test@1234"}
-let token;
-test.beforeAll( async() =>{
-     const apiContext =await request.newContext();
-
-    const loginResponse = await apiContext.post("https://rahulshettyacademy.com/api/ecom/auth/login",
-        {
-         data: loginData
-        });
+let tokenData;
+const loginData = {userEmail: "jasdeeps426@yopmail.com", userPassword: "Test@1234"};
 
 
-        expect(loginResponse.ok()).toBeTruthy()
+test.beforeAll("Login with API ", async ()=>{
 
-        const loginResponseJson= await loginResponse.json();
-         token =loginResponseJson.token;
-        console.log(token)
+  const apiNewContext= await request.newContext();
+ const loginResponse= await apiNewContext.post('https://rahulshettyacademy.com/api/ecom/auth/login',{
+    data : loginData
+    
+  })
 
+  expect(loginResponse.status()).toBe(200)
 
+  const loginResponseJsonData =await loginResponse.json()
+
+  tokenData =await loginResponseJsonData.token;
+  console.log("tokenData ",tokenData)
 
 
 })
-
 
 test('client app login', async ({ page }) => {
 
   const productName = 'ZARA COAT 3';
   await page.addInitScript(value => {
-    window.localStorage.setItem('token',value);
-   
-  } , token)
-
-  await page.goto('https://rahulshettyacademy.com/client/');
-  
+    window.localStorage.setItem('token',value);    
+  },tokenData)
 
 
-  await page.waitForLoadState('networkidle');
-
-
-
+  await page.goto("https://rahulshettyacademy.com/client/")
   // Verify product is available and add to cart
   const products = page.locator('.card-body');
   await products.last().waitFor();
